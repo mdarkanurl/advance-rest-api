@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { omit } from 'lodash';
 
 import logger from '../utils/logger';
 import { CreateUserInput } from '../schema/user.schema';
@@ -8,10 +9,9 @@ export const createUserHandlr = async (
     req: Request<{}, {}, CreateUserInput['body']>,
     res: Response) => {
     try {
-        console.log('Is it hit here', req.body);
-        await createUser(req.body);
+        const user = await createUser(req.body);
 
-        res.status(201).send('User has created');
+        res.status(201).send(omit(user.toJSON(),'password'));
         return;
     } catch (error: any) {
         logger.error(error.message);

@@ -3,6 +3,8 @@ import { Express, Request, Response } from 'express';
 import { createUserHandlr } from './controller/user.controller';
 import validateResource from './middleware/validateResource';
 import { createUserSchema } from './schema/user.schema';
+import { createUserSeesionHandler } from './controller/seesion.controller';
+import { createSessionSchema } from './schema/session.schema';
 
 function routes(app: Express) {
     app.get('/', (req: Request, res: Response) => {
@@ -13,7 +15,12 @@ function routes(app: Express) {
 
     app.post('/api/users',
         validateResource(createUserSchema),
-        createUserHandlr)
+        createUserHandlr);
+
+
+    app.post('/api/sessions',
+        validateResource(createSessionSchema),
+        createUserSeesionHandler);
 }
 
 export default routes;

@@ -1,5 +1,6 @@
-import Session from "../models/session.model"
-import User, { UserDocument } from "../models/user.model";
+import { FilterQuery } from "mongoose";
+import Session, { SessionDocument } from "../models/session.model"
+import User from "../models/user.model";
 
 export const createSession = async (userId: string | unknown, userAgent: string) => {
     const session = await Session.create({ user: userId, userAgent });
@@ -27,4 +28,8 @@ export async function validatePassword({ email, password }: {email: string, pass
     return {
         userId: user._id
     };
+}
+
+export async function findSessions(query: FilterQuery<SessionDocument>) {
+    return await Session.find(query).lean();
 }
